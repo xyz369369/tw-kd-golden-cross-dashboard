@@ -60,14 +60,30 @@ def fetch_twse(d: date):
     return rows_out
 
 def fetch_tpex(d: date):
-    roc_year = d.year - 1911
-    dstr = f"{roc_year}/{d.month:02d}/{d.day:02d}"
-    url = f"https://www.tpex.org.tw/web/stock/aftertrading/daily_close_quotes/stk_quote_result.php?l=zh-tw&d={dstr}"
-    try:
-        r = requests.get(url, timeout=15)
-        j = r.json()
-    except Exception as e:
-        print("TPEx err", dstr, e)
+    # NOTE: the legacy endpoint below (stk_quote_result.php with an ROC-year
+    # "d=115/07/28"-style date) silently IGNORES the requested date and always
+    # returns the latest trading day's snapshot. Discovered 2026-07-29: this had
+    # been corrupting every TPEx (上櫃) stock's stored history with the same
+    # duplicated values across all dates ever since the initial bootstrap.
+    # The current working endpoint is the newer "www/zh-tw/afterTrading" one,
+    # which correctly honors a plain YYYY/MM/DD `date` param and echoes back
+    # the actual date served in its "date" response field.
+    dstr = f"{d.year:04d}/{d.month:02d}/{d.day:02d}"
+    url = "https://www.tpex.org.tw/www/zh-tw/afterTrading/dailyQuotes"
+    j = None
+    for attempt in range(3):
+        try:
+            r = requests.get(url, params={"date": dstr, "response": "json"}, timeout=20)
+            j = r.json()
+            break
+        except Exception as e:
+            print("TPEx err", dstr, e, f"(attempt {attempt + 1}/3)")
+            time.sleep(1.5)
+    if j is None:
+        return []
+    # Sanity check: the response must actually echo back the requested date.
+    if j.get("date") and j["date"] != d.strftime("%Y%m%d"):
+        print("TPEx date mismatch, skipping", dstr, "got", j.get("date"))
         return []
     rows_out = []
     for t in j.get("tables", []):
