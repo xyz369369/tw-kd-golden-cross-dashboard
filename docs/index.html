@@ -46,6 +46,13 @@
   </div>
 </header>
 
+<nav class="main-nav">
+  <div class="wrap main-nav-inner">
+    <a class="nav-tab active" href="index.html">篩選儀表板</a>
+    <a class="nav-tab" href="stock.html">個股查詢</a>
+  </div>
+</nav>
+
 <main class="wrap">
 
   <section class="kpis" aria-label="總覽指標">
@@ -69,15 +76,6 @@
       <div class="kpi-value" id="kpi-updated-at" style="font-size: var(--text-base);">–</div>
       <div class="kpi-note">每日交易日收盤後自動執行</div>
     </div>
-  </section>
-
-  <section class="lookup-section">
-    <div class="section-title">個股查詢（全市場）</div>
-    <div class="lookup-search-wrap">
-      <input id="lookup-input" class="search-input" type="text" placeholder="輸入股票代號或名稱，例如 2330 或 台積電" autocomplete="off" />
-      <div id="lookup-suggestions" class="lookup-suggestions"></div>
-    </div>
-    <div class="lookup-hint" id="lookup-hint">可查詢全市場上市 / 上櫃任一股票的近期股價、KD 與成交量走勢。</div>
   </section>
 
   <section class="criteria">
@@ -134,37 +132,8 @@
 
 </main>
 
-<div id="lookup-modal" class="lookup-modal">
-  <div class="lookup-modal-backdrop" data-close-modal></div>
-  <div class="lookup-modal-card">
-    <button class="lookup-modal-close" data-close-modal aria-label="關閉">&times;</button>
-    <div class="lookup-modal-header">
-      <div class="lookup-modal-title"><span id="lookup-code"></span> <span id="lookup-name"></span></div>
-      <span class="market-tag" id="lookup-market"></span>
-    </div>
-    <div class="lookup-stats" id="lookup-stats"></div>
-    <div class="lookup-loading" id="lookup-loading">資料載入中…</div>
-    <div class="lookup-error" id="lookup-error">查無資料，或該股票近期無交易資訊。</div>
-    <div id="lookup-charts" class="lookup-charts">
-      <div class="lookup-chart-block">
-        <div class="chart-label">股價走勢（收盤 / MA20）</div>
-        <canvas id="chart-price" height="220"></canvas>
-      </div>
-      <div class="lookup-chart-block">
-        <div class="chart-label">KD 指標走勢</div>
-        <canvas id="chart-kd" height="180"></canvas>
-      </div>
-      <div class="lookup-chart-block">
-        <div class="chart-label">成交量走勢（含量MA20）</div>
-        <canvas id="chart-volume" height="180"></canvas>
-      </div>
-    </div>
-  </div>
-</div>
-
 <script src="gate.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="theme.js"></script>
 <script src="app.js"></script>
-<script src="stock_lookup.js"></script>
 </body>
 </html>

@@ -1,7 +1,8 @@
 (function () {
   var input = document.getElementById('lookup-input');
   var suggestionsBox = document.getElementById('lookup-suggestions');
-  var modal = document.getElementById('lookup-modal');
+  var emptyState = document.getElementById('lookup-empty');
+  var detail = document.getElementById('lookup-detail');
   var loadingEl = document.getElementById('lookup-loading');
   var errorEl = document.getElementById('lookup-error');
   var chartsWrap = document.getElementById('lookup-charts');
@@ -97,28 +98,17 @@
     }
   });
 
-  // ---- Modal ----
-  function openModal() { modal.classList.add('open'); }
-  function closeModal() {
-    modal.classList.remove('open');
-    Object.keys(charts).forEach(function (k) { charts[k].destroy(); });
-    charts = {};
-  }
-  modal.querySelectorAll('[data-close-modal]').forEach(function (el) {
-    el.addEventListener('click', closeModal);
-  });
-  document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
-  });
-
+  // ---- Detail panel (inline on the page) ----
   function selectStock(code) {
     suggestionsBox.classList.remove('open');
     input.value = '';
+
+    emptyState.style.display = 'none';
+    detail.style.display = 'block';
     loadingEl.style.display = 'block';
     errorEl.style.display = 'none';
     chartsWrap.style.display = 'none';
     statsEl.innerHTML = '';
-    openModal();
 
     loadHistory().then(function (data) {
       var s = data.stocks[code];
@@ -129,7 +119,7 @@
       }
       renderDetail(code, s);
       loadingEl.style.display = 'none';
-      chartsWrap.style.display = 'flex';
+      chartsWrap.style.display = 'block';
     }).catch(function () {
       loadingEl.style.display = 'none';
       errorEl.style.display = 'block';
@@ -174,6 +164,7 @@
     };
     var commonOpts = {
       responsive: true,
+      maintainAspectRatio: false,
       interaction: { mode: 'index', intersect: false },
       plugins: { legend: { labels: { color: textColor } } },
       scales: commonScales
