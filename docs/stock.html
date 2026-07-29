@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="style.css?v=36da024" />
+<link rel="stylesheet" href="style.css?v=professional-nav-1" />
 </head>
 <body class="locked">
 
@@ -45,10 +45,14 @@
   </div>
 </header>
 
-<nav class="main-nav">
+<nav class="main-nav" aria-label="主要功能">
   <div class="wrap main-nav-inner">
-    <a class="nav-tab" href="index.html">篩選儀表板</a>
-    <a class="nav-tab active" href="stock.html">個股查詢</a>
+    <a class="nav-tab" href="index.html"><span class="nav-icon">◈</span><span>市場雷達</span></a>
+    <a class="nav-tab active" href="stock.html"><span class="nav-icon">⌕</span><span>個股研究</span></a>
+    <a class="nav-tab nav-tab-soon" href="#" aria-disabled="true" title="即將推出"><span class="nav-icon">☆</span><span>自選清單</span><em>即將推出</em></a>
+    <a class="nav-tab nav-tab-soon" href="#" aria-disabled="true" title="即將推出"><span class="nav-icon">◌</span><span>警示中心</span><em>即將推出</em></a>
+    <a class="nav-tab nav-tab-soon" href="#" aria-disabled="true" title="即將推出"><span class="nav-icon">⌁</span><span>策略研究</span><em>即將推出</em></a>
+    <a class="nav-tab nav-tab-soon" href="#" aria-disabled="true" title="即將推出"><span class="nav-icon">▦</span><span>資料中心</span><em>即將推出</em></a>
   </div>
 </nav>
 
