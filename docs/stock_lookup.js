@@ -8,6 +8,13 @@
   var chartsWrap = document.getElementById('lookup-charts');
   var statsEl = document.getElementById('lookup-stats');
 
+  // Guard against a stale cached page (old markup) paired with this script.
+  // Fail loudly in the console instead of silently doing nothing.
+  if (!input || !suggestionsBox || !emptyState || !detail || !loadingEl || !errorEl || !chartsWrap || !statsEl) {
+    console.error('stock_lookup.js: expected elements missing — page may be a stale cached version. Try a hard refresh (Ctrl/Cmd+Shift+R).');
+    return;
+  }
+
   var historyData = null; // full stocks_history.json, fetched lazily on first use
   var loadPromise = null;
   var charts = {}; // Chart.js instances, keyed by canvas id
@@ -63,13 +70,19 @@
     suggestionsBox.classList.add('open');
   }
 
+  function handleLoadError(err) {
+    console.error('stock_lookup.js: failed to load stocks_history.json', err);
+    suggestionsBox.innerHTML = '<div class="lookup-suggestion-empty">資料載入失敗，請重新整理頁面後再試一次。</div>';
+    suggestionsBox.classList.add('open');
+  }
+
   input.addEventListener('focus', function () {
-    loadHistory().then(function () { renderSuggestions(input.value); });
+    loadHistory().then(function () { renderSuggestions(input.value); }).catch(handleLoadError);
   });
 
   input.addEventListener('input', function () {
     if (historyData) renderSuggestions(input.value);
-    else loadHistory().then(function () { renderSuggestions(input.value); });
+    else loadHistory().then(function () { renderSuggestions(input.value); }).catch(handleLoadError);
   });
 
   input.addEventListener('keydown', function (e) {
