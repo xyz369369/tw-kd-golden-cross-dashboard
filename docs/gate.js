@@ -4,10 +4,12 @@
 // code and data.json are still publicly reachable directly, since GitHub
 // Pages requires a public repo on the free plan. Do not rely on this to
 // protect sensitive data.
+//
+// By design, the password is required on every page load/refresh —
+// nothing is remembered between visits.
 
 (function () {
   var PASSWORD_HASH = "1a930a57aefb7342b6a760de7f7e5e9fd4bd2beb8c53f86b57ee5a9eb1674468"; // sha256
-  var STORAGE_KEY = "tw_kd_dashboard_unlocked";
 
   var lockScreen = document.getElementById("lock-screen");
   var lockForm = document.getElementById("lock-form");
@@ -27,17 +29,13 @@
       .join("");
   }
 
-  if (localStorage.getItem(STORAGE_KEY) === "1") {
-    unlock();
-  }
-  // else: body already has class="locked" from the server-rendered HTML,
-  // so there's no flash of unlocked content before this script runs.
+  // body starts with class="locked" in the HTML, so the dashboard is
+  // always hidden until the correct password is submitted this load.
 
   lockForm.addEventListener("submit", async function (e) {
     e.preventDefault();
     var hash = await sha256Hex(lockInput.value);
     if (hash === PASSWORD_HASH) {
-      localStorage.setItem(STORAGE_KEY, "1");
       lockError.style.display = "none";
       unlock();
     } else {
