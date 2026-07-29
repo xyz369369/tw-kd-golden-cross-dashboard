@@ -11,7 +11,20 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="style.css" />
 </head>
-<body>
+<body class="locked">
+
+<div id="lock-screen" class="lock-screen">
+  <form id="lock-form" class="lock-card" autocomplete="off">
+    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="lock-icon" aria-hidden="true">
+      <rect x="4" y="11" width="16" height="9" rx="2"/>
+      <path d="M8 11V7a4 4 0 0 1 8 0v4"/>
+    </svg>
+    <div class="lock-title">請輸入密碼以進入儀表板</div>
+    <input id="lock-input" class="lock-input" type="password" placeholder="密碼" autofocus />
+    <button type="submit" class="lock-btn">進入</button>
+    <div id="lock-error" class="lock-error" style="display:none;">密碼錯誤，請再試一次。</div>
+  </form>
+</div>
 
 <header class="topbar">
   <div class="wrap topbar-inner">
@@ -112,6 +125,7 @@
 
 </main>
 
+<script src="gate.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

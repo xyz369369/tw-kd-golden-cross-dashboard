@@ -156,3 +156,56 @@ tbody tr.is-new { background: color-mix(in oklab, var(--color-primary-highlight)
   .kpis { grid-template-columns: 1fr; }
   .brand-sub { display:none; }
 }
+
+/* ---- Lock screen ---- */
+body.locked > *:not(#lock-screen) { display: none !important; }
+
+.lock-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg);
+  padding: 1.5rem;
+}
+.lock-card {
+  width: 100%;
+  max-width: 320px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+  padding: 2rem 1.75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9rem;
+  text-align: center;
+}
+.lock-icon { color: var(--color-primary); }
+.lock-title { font-weight: 700; font-size: var(--text-base); color: var(--color-text); }
+.lock-input {
+  width: 100%;
+  padding: 0.65rem 0.9rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-2);
+  color: var(--color-text);
+  font-size: var(--text-base);
+  text-align: center;
+  letter-spacing: 0.05em;
+}
+.lock-input:focus { border-color: var(--color-primary); }
+.lock-btn {
+  width: 100%;
+  padding: 0.65rem 0.9rem;
+  border-radius: var(--radius-md);
+  background: var(--color-primary);
+  color: var(--color-text-inverse);
+  font-weight: 600;
+  transition: background var(--transition-interactive);
+}
+.lock-btn:hover { background: var(--color-primary-hover); }
+.lock-error { color: var(--color-error); font-size: var(--text-sm, 0.875rem); }
