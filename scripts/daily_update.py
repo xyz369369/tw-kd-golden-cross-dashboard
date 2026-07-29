@@ -14,6 +14,7 @@ from datetime import date, timedelta
 
 import fetch_history as fh
 import compute_screen as cs
+import export_stocks as es
 
 
 def backfill_missing():
@@ -48,7 +49,9 @@ def backfill_missing():
 if __name__ == "__main__":
     fetched = backfill_missing() or []
     result = cs.screen()
+    stocks_out = es.export_all()
     fh.prune(keep_days=90)
     print("FETCHED_DAYS:", fetched)
     print("MATCH_COUNT:", result["match_count"])
     print("NEW_MATCHES_TODAY:", result["new_matches_today"])
+    print("STOCKS_EXPORTED:", stocks_out["count"])
