@@ -4,12 +4,12 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>個股查詢 — 台股 KD 黃金交叉監控</title>
-<meta name="description" content="查詢全市場上市／上櫃任一股票的股價走勢、KD 指標與成交量歷史資料。" />
-<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><rect width=%2232%22 height=%2232%22 rx=%227%22 fill=%22%23e3b341%22/><path d=%22M6 20 L13 12 L18 17 L26 8%22 stroke=%22%2311161d%22 stroke-width=%223%22 fill=%22none%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/></svg>" />
+<meta name="description" content="查詢全市場上市／上櫃任一股票的股價走勢、KD 指標、成交量、三大法人、換手率、融資融券歷史資料。" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><rect width=%2232%22 height=%2232%22 rx=%227%22 fill=%22%23e3b341%22/><path d=%22M6 20 L13 12 L18 17 L26 8%22 stroke=%2211161d%22 stroke-width=%223%22 fill=%22none%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/></svg>" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="style.css?v=professional-nav-1" />
+<link rel="stylesheet" href="style.css?v=stock-v3" />
 </head>
 <body class="locked">
 
@@ -49,8 +49,8 @@
   <div class="wrap main-nav-inner">
     <a class="nav-tab" href="index.html"><span class="nav-icon">◈</span><span>市場雷達</span></a>
     <a class="nav-tab active" href="stock.html"><span class="nav-icon">⌕</span><span>個股研究</span></a>
-    <a class="nav-tab nav-tab-soon" href="#" aria-disabled="true" title="即將推出"><span class="nav-icon">☆</span><span>自選清單</span><em>即將推出</em></a>
-    <a class="nav-tab nav-tab-soon" href="#" aria-disabled="true" title="即將推出"><span class="nav-icon">◌</span><span>警示中心</span><em>即將推出</em></a>
+    <a class="nav-tab" href="watchlist.html"><span class="nav-icon">☆</span><span>自選清單</span></a>
+    <a class="nav-tab" href="stock_data.html"><span class="nav-icon">◌</span><span>個股資料</span></a>
     <a class="nav-tab nav-tab-soon" href="#" aria-disabled="true" title="即將推出"><span class="nav-icon">⌁</span><span>策略研究</span><em>即將推出</em></a>
     <a class="nav-tab nav-tab-soon" href="#" aria-disabled="true" title="即將推出"><span class="nav-icon">▦</span><span>資料中心</span><em>即將推出</em></a>
   </div>
@@ -64,7 +64,7 @@
       <input id="lookup-input" class="search-input lookup-search-input" type="text" placeholder="輸入股票代號或名稱，例如 2330 或 台積電" autocomplete="off" autofocus />
       <div id="lookup-suggestions" class="lookup-suggestions"></div>
     </div>
-    <div class="lookup-hint">可查詢全市場上市 / 上櫃任一股票近 60 個交易日的股價、KD 與成交量走勢。</div>
+    <div class="lookup-hint">可查詢全市場上市 / 上櫃任一股票近 60 個交易日的股價、KD、成交量、三大法人、換手率、融資融券走勢。</div>
   </section>
 
   <section id="lookup-empty" class="lookup-empty-state">
@@ -84,10 +84,14 @@
     <div class="lookup-loading" id="lookup-loading">資料載入中…</div>
     <div class="lookup-error" id="lookup-error">查無資料，或該股票近期無交易資訊。</div>
     <div id="lookup-charts" class="lookup-charts">
+
+      <!-- 股價走勢 -->
       <div class="lookup-chart-block chart-full">
         <div class="chart-label">股價走勢（收盤 / MA20）</div>
         <div class="chart-canvas-wrap chart-canvas-wrap-lg"><canvas id="chart-price"></canvas></div>
       </div>
+
+      <!-- KD + 成交量 -->
       <div class="lookup-charts-row">
         <div class="lookup-chart-block">
           <div class="chart-label">KD 指標走勢</div>
@@ -98,11 +102,30 @@
           <div class="chart-canvas-wrap"><canvas id="chart-volume"></canvas></div>
         </div>
       </div>
+
+      <!-- 三大法人 -->
+      <div id="chart-instit-block" class="lookup-chart-block chart-full">
+        <div class="chart-label">三大法人買賣超走勢（張）</div>
+        <div class="chart-canvas-wrap chart-canvas-wrap-lg"><canvas id="chart-instit"></canvas></div>
+      </div>
+
+      <!-- 換手率 + 融資融券 -->
+      <div class="lookup-charts-row">
+        <div id="chart-turnover-block" class="lookup-chart-block">
+          <div class="chart-label">換手率走勢（%）</div>
+          <div class="chart-canvas-wrap"><canvas id="chart-turnover"></canvas></div>
+        </div>
+        <div id="chart-margin-block" class="lookup-chart-block">
+          <div class="chart-label">融資 / 融券餘額（張）</div>
+          <div class="chart-canvas-wrap"><canvas id="chart-margin"></canvas></div>
+        </div>
+      </div>
+
     </div>
   </section>
 
   <p class="footnote">
-    資料來源：<a href="https://www.twse.com.tw/" target="_blank" rel="noopener">臺灣證券交易所 (TWSE)</a> 每日收盤行情、
+    資料來源：<a href="https://www.twse.com.tw/" target="_blank" rel="noopener">臺灣證券交易所 (TWSE)</a> 每日收盤行情、三大法人買賣超（T86）、融資融券（MI_MARGN）；
     <a href="https://www.tpex.org.tw/" target="_blank" rel="noopener">證券櫃買中心 (TPEx)</a> 上櫃股票每日收盤行情，公開資訊觀測站公開資料。
     KD 指標採 9 日 RSV、K/D 平滑係數 3 之標準參數計算，僅供技術面篩選參考，不構成投資建議。
   </p>
@@ -112,6 +135,6 @@
 <script src="gate.js?v=36da024"></script>
 <script src="theme.js?v=36da024"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
-<script src="stock_lookup.js?v=36da024"></script>
+<script src="stock_lookup.js?v=stock-v4"></script>
 </body>
 </html>
