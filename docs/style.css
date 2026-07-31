@@ -13,6 +13,206 @@ table { border-collapse: collapse; width: 100%; }
 :focus-visible { outline: 2px solid var(--color-primary); outline-offset: 2px; border-radius: var(--radius-sm); }
 ::selection { background: color-mix(in oklab, var(--color-primary) 30%, transparent); }
 button { cursor: pointer; background: none; border: none; }
+
+.watchlist-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  background: var(--color-surface-2);
+  transition: all var(--transition-interactive);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.watchlist-btn:hover {
+  color: var(--color-primary);
+  background: var(--color-primary-highlight);
+}
+
+.watchlist-btn:active {
+  transform: scale(0.95);
+}
+
+.add-stock-wrap {
+  position: relative;
+  flex: 1;
+  max-width: 400px;
+}
+
+.suggestion-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--color-divider);
+}
+
+.suggestion-item:last-child {
+  border-bottom: none;
+}
+
+.suggestion-item:hover {
+  background: var(--color-surface-2);
+}
+
+.suggestion-code {
+  font-weight: 600;
+  color: var(--color-primary);
+  min-width: 60px;
+}
+
+.suggestion-name {
+  flex: 1;
+  margin-left: 8px;
+}
+
+.suggestion-market {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  margin-right: 8px;
+}
+
+.suggestion-add-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  background: var(--color-surface-2);
+  transition: all var(--transition-interactive);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.suggestion-add-btn:hover:not(:disabled) {
+  color: var(--color-primary);
+  background: var(--color-primary-highlight);
+}
+
+.suggestion-add-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.refresh-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-text);
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-divider);
+  transition: all var(--transition-interactive);
+}
+
+.refresh-btn:hover:not(:disabled) {
+  color: var(--color-primary);
+  background: var(--color-primary-highlight);
+  border-color: var(--color-primary);
+}
+
+.refresh-btn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.refresh-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.refresh-btn svg {
+  flex-shrink: 0;
+}
+
+.refresh-btn svg.spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.tab-btn {
+  padding: 10px 20px;
+  border: none;
+  background: none;
+  color: var(--color-text-muted);
+  font-weight: 500;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all var(--transition-interactive);
+}
+
+.tab-btn:hover {
+  color: var(--color-primary);
+}
+
+.tab-btn.active {
+  color: var(--color-primary);
+  border-bottom-color: var(--color-primary);
+}
+
+.tab-panel {
+  display: none;
+}
+
+.tab-panel.active {
+  display: block;
+}
+
+.data-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.data-item {
+  background: var(--color-surface);
+  padding: 16px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+}
+
+.data-label {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  margin-bottom: 8px;
+}
+
+.data-value {
+  font-size: var(--text-lg);
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.data-value.accent {
+  color: var(--color-primary);
+}
+
+.data-value.val-up {
+  color: var(--color-success);
+}
+
+.data-value.val-down {
+  color: var(--color-error);
+}
 @media (prefers-reduced-motion: reduce) { *,*::before,*::after { animation-duration: .01ms!important; transition-duration:.01ms!important; } }
 
 /* ---- Design tokens ---- */
@@ -37,6 +237,8 @@ button { cursor: pointer; background: none; border: none; }
   --color-success-highlight: #d8f0e1;
   --color-error: #d93025;
   --color-error-highlight: #f7dad7;
+  --color-danger: #d93025;
+  --color-orange: #e65c00;
   --color-blue: #2d6cb0;
   --color-blue-highlight: #d9e6f4;
 
@@ -71,6 +273,8 @@ button { cursor: pointer; background: none; border: none; }
   --color-success-highlight: #16332a;
   --color-error: #ef6b62;
   --color-error-highlight: #3a2124;
+  --color-danger: #ef6b62;
+  --color-orange: #fb8c00;
   --color-blue: #6ba6e0;
   --color-blue-highlight: #1c2c3d;
 
@@ -302,4 +506,12 @@ body.locked > *:not(#lock-screen) { display: none !important; }
 .nav-tab-soon:hover { background: transparent; color: var(--color-text-muted); }
 .export-btn { margin-left: auto; display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.52rem 0.72rem; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-surface); color: var(--color-text-faint); font: inherit; font-size: 0.8rem; font-weight: 700; cursor: not-allowed; white-space: nowrap; }
 .export-btn .export-badge { margin-left: 0.15rem; font-size: 0.65rem; font-weight: 500; }
+.val-up { color: var(--color-error); font-weight: 600; }
+.val-down { color: var(--color-success); font-weight: 600; }
+.stock-link { color: var(--color-text); text-decoration: none; font-weight: 600; transition: color var(--transition-interactive); }
+.stock-link:hover { color: var(--color-primary); text-decoration: underline; }
 @media (max-width: 720px) { .main-nav-inner { padding-left: 0.75rem; padding-right: 0.75rem; } .nav-tab { padding: 0.52rem 0.68rem; } .nav-tab em { display: none; } .export-btn { width: 100%; justify-content: center; margin: 0.25rem 0 0; } .table-toolbar { flex-wrap: wrap; } }
+
+/* ---- 法人買賣超色彩 ---- */
+.net-buy  { color: var(--color-danger); font-weight: 600; }
+.net-sell { color: var(--color-success); font-weight: 600; }
