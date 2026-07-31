@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>市場雷達 — 台股 KD 黃金交叉監控</title>
-<meta name="description" content="每日自動篩選台股上市上櫃標的：股價低於150元、站上20日均價與均量、KD(9,3,3)出現黃金交叉。" />
+<meta name="description" content="每日自動篩選台股上市上櫃標的：股價低於150元、站上20日均價與均量、成交量大於1000張、KD(9,3,3)出現黃金交叉。" />
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><rect width=%2232%22 height=%2232%22 rx=%227%22 fill=%22%23e3b341%22/><path d=%22M6 20 L13 12 L18 17 L26 8%22 stroke=%22%2311161d%22 stroke-width=%223%22 fill=%22none%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/></svg>" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -50,13 +50,17 @@
   <div class="wrap main-nav-inner">
     <a class="nav-tab active" href="index.html"><span class="nav-icon">◈</span><span>市場雷達</span></a>
     <a class="nav-tab" href="stock.html"><span class="nav-icon">⌕</span><span>個股研究</span></a>
-    <a class="nav-tab nav-tab-soon" href="#" aria-disabled="true" title="即將推出"><span class="nav-icon">☆</span><span>自選清單</span><em>即將推出</em></a>
-    <a class="nav-tab nav-tab-soon" href="#" aria-disabled="true" title="即將推出"><span class="nav-icon">◌</span><span>警示中心</span><em>即將推出</em></a>
+    <a class="nav-tab" href="watchlist.html"><span class="nav-icon">☆</span><span>自選清單</span></a>
+    <a class="nav-tab" href="stock_data.html"><span class="nav-icon">◌</span><span>個股資料</span></a>
     <a class="nav-tab nav-tab-soon" href="#" aria-disabled="true" title="即將推出"><span class="nav-icon">⌁</span><span>策略研究</span><em>即將推出</em></a>
     <a class="nav-tab nav-tab-soon" href="#" aria-disabled="true" title="即將推出"><span class="nav-icon">▦</span><span>資料中心</span><em>即將推出</em></a>
     <button class="export-btn" type="button" disabled title="尚未啟用，將於後續版本串接">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg>
       匯出 XLSX<span class="export-badge">即將推出</span>
+    </button>
+    <button class="refresh-btn" type="button" id="manual-refresh-btn" title="手動更新資料">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+      手動更新
     </button>
   </div>
 </nav>
@@ -91,8 +95,9 @@
     <div class="chip-row">
       <div class="chip"><span class="num">①</span> 收盤價 &lt; 150 元</div>
       <div class="chip"><span class="num">②</span> 收盤價 &gt; 20日均價 (MA20)</div>
-      <div class="chip"><span class="num">③</span> 成交量 &gt; 20日均量 (量MA20)</div>
-      <div class="chip"><span class="num">④</span> KD(9,3,3) 出現黃金交叉</div>
+      <div class="chip"><span class="num">③</span> 成交量 &gt; 1,000 張</div>
+      <div class="chip"><span class="num">④</span> 成交量 &gt; 20日均量 (量MA20)</div>
+      <div class="chip"><span class="num">⑤</span> KD(9,3,3) 出現黃金交叉</div>
     </div>
   </section>
 
@@ -112,11 +117,17 @@
           <tr>
             <th data-key="code">代號<span class="arrow"></span></th>
             <th data-key="name">名稱<span class="arrow"></span></th>
+            <th></th>
             <th data-key="market">市場<span class="arrow"></span></th>
             <th data-key="close">收盤價<span class="arrow"></span></th>
             <th data-key="ma20_close">MA20<span class="arrow"></span></th>
-            <th data-key="volume">成交量(股)<span class="arrow"></span></th>
+            <th data-key="volume">成交量(張)<span class="arrow"></span></th>
             <th data-key="ma20_volume">量MA20<span class="arrow"></span></th>
+            <th data-key="turnover_rate">換手率<span class="arrow"></span></th>
+            <th data-key="foreign_net">外資(張)<span class="arrow"></span></th>
+            <th data-key="trust_net">投信(張)<span class="arrow"></span></th>
+            <th data-key="dealer_net">自營(張)<span class="arrow"></span></th>
+            <th data-key="total_net">三大法人(張)<span class="arrow"></span></th>
             <th data-key="K">K值<span class="arrow"></span></th>
             <th data-key="D">D值<span class="arrow"></span></th>
           </tr>
