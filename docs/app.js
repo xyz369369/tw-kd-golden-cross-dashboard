@@ -1,4 +1,12 @@
 (function () {
+  if (location.protocol === 'file:') {
+    document.getElementById('status-text').textContent = '請使用 HTTP 伺服器開啟';
+    document.getElementById('empty-state').textContent =
+      '無法載入資料：請在 docs 資料夾執行「python -m http.server 8765」，再開啟 http://localhost:8765/';
+    document.getElementById('empty-state').style.display = 'block';
+    return;
+  }
+
   // State
   let matches = [];
   let newCodes = new Set();

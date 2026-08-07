@@ -18,6 +18,15 @@
   var lockInput = document.getElementById("lock-input");
   var lockError = document.getElementById("lock-error");
 
+  if (location.protocol === "file:") {
+    lockError.textContent =
+      "無法以本機檔案方式開啟。請在 docs 資料夾執行「python -m http.server 8765」，再開啟 http://localhost:8765/";
+    lockError.style.display = "block";
+    lockInput.disabled = true;
+    lockForm.querySelector(".lock-btn").disabled = true;
+    return;
+  }
+
   function unlock() {
     lockScreen.style.display = "none";
     document.body.classList.remove("locked");
