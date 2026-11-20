@@ -1,13 +1,9 @@
 {
-  "generated_at": "2026-11-19T16:04:53.403539",
+  "generated_at": "2026-11-20T15:46:36.375308",
   "data_date": "2026-11-19",
   "criteria": "股價<150, 收盤價>MA20, 成交量>量MA20, KD(9,3,3)黃金交叉",
   "match_count": 3,
-  "new_matches_today": [
-    "6952",
-    "1203",
-    "1341"
-  ],
+  "new_matches_today": [],
   "matches": [
     {
       "code": "6952",
